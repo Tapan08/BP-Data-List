@@ -1,0 +1,46 @@
+﻿@model BP
+
+@{
+    string title = ViewBag.Action + "BP Measurement";
+    ViewData["Title"] = title;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Edit" method="post">
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+	<div class="mb-3">
+		<label asp-for="systolic" class="form-label">Systolic (mm Hg)</label>
+		<input asp-for="systolic" class="form-control" />
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="diastolicValues" class="form-label">Diastolic (mm Hg)</label>
+		<input asp-for="diastolicValues" class="form-control" />
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="PositionId" class="form-label">Position</label>
+		<select asp-for="PositionId" class="form-select">
+			<option value="">Select a position</option>
+			@foreach (Position g in ViewBag.Position)
+			{
+				<option value="@g.PositionId">
+					@g.PositionId
+				</option>
+			}
+		</select>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="DateCreated" class="form-label">Date of Measurement</label>
+		<input asp-for="DateCreated" class="form-control" />
+	</div>
+
+	<input type="hidden" asp-for="Id" />
+
+	<button type="submit" class="btn btn-primary">@ViewBag.Action</button>
+	<a asp-controller="Patients" asp-action="AllBP" class="btn btn-primary">Cancel</a>
+
+</form>

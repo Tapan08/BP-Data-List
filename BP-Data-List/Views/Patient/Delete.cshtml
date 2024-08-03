@@ -1,0 +1,16 @@
+﻿@model BP
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+<h3>@Model.systolic/@Model.diastolicValues (taken on @Model.DateCreated)</h3>
+
+<form asp-action="Delete" method="post">
+	<input type="hidden" asp-for="Id" />
+
+	<button type="submit" class="btn btn-primary">Delete</button>
+	<a asp-controller="Patients" asp-action="AllBP" class="btn btn-primary">Cancel</a>
+</form>
+
+

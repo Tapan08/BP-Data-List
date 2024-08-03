@@ -1,0 +1,116 @@
+﻿@functions{
+
+    string GetCategory(BP reading)
+    {   
+
+
+        if (reading.systolic < 120 && reading.diastolicValues < 80)
+        {
+            return "Normal";
+        }
+    	else if ((reading.systolic > 120 && reading.systolic <= 129) && reading.diastolicValues <= 80)
+    	{
+    		return "Elevated";
+    	}
+        else if ((reading.systolic > 130 && reading.systolic <= 139) || (reading.diastolicValues >= 80 && reading.diastolicValues <= 89))
+    	{
+    		return "Hypertension Stage1";
+    	}
+        else if (reading.systolic <= 180 && reading.diastolicValues <= 120)
+    	{
+    		return "Hypertension Stage2";
+    	}
+    	else
+    	{
+    		return "Hypertensive Crisis";
+    	}
+    }  
+
+    string GetCategoryClass(string category)
+    {
+        switch (category)
+        {
+            case "Normal":
+                return "category-normal";
+            case "Elevated":
+                return "category-elevated";
+            case "Hypertension Stage1":
+                return "category-hypertension-stage1";
+            case "Hypertension Stage2":
+                return "category-hypertension-stage2";
+            case "Hypertensive Crisis":
+                return "category-hypertensive-crisis";
+            default:
+                return "default-category"; // Define a default class as needed
+        }
+    }
+
+} 
+
+<style>
+    .category-normal {
+        color: darkgreen;
+    }
+
+    .category-elevated {
+        color: blue;
+    }
+
+    .category-hypertension-stage1 {
+        color: orange;
+    }
+
+    .category-hypertension-stage2 {
+        color: orangered;
+    }
+
+    .category-hypertensive-crisis {
+        color: darkred;
+    }
+</style>
+@model List<BP>
+
+@{
+    ViewData["Title"] = "AllBP";
+}
+<div class="text-center">
+<h1>AllBP</h1>
+
+<a asp-controller="Patient" asp-action="Add">Add new BP measurement</a> | <a href="#">Information on BP measurement</a>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Reading</th>
+            <th>Category</th>
+            <th>Date Taken</th>
+            <th>Position</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var bp in Model)
+        {
+            var category = GetCategory(bp);
+            var categoryClass = GetCategoryClass(category);
+            <tr>
+                <td class="@categoryClass">@bp.systolic/@bp.diastolicValues</td>
+                <td class="@categoryClass">@category</td>
+                <td>@bp.DateCreated</td>
+                <td>@bp.Position.Name</td>
+                <td>
+                    <a asp-controller="Patient" asp-action="Edit" asp-route-id="@bp.Id">Edit</a>
+                    <a asp-controller="Patient" asp-action="Delete" asp-route-id="@bp.Id">Delete</a>
+                </td>
+            </tr>
+
+        }
+
+
+    </tbody>
+</table>
+</div>
+
+
